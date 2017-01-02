@@ -105,7 +105,6 @@ public class GameManager : MonoBehaviour {
                 {
                     if (colorMatch)
                     {
-                        Handheld.Vibrate();
                         colorMatch = false;
                         Stick.stick.SetStickColor();
                         if (selectedDifficulty == 1)
@@ -166,8 +165,7 @@ public class GameManager : MonoBehaviour {
     {
         music.Stop();
         Handheld.Vibrate();
-        Handheld.Vibrate();
-        Handheld.Vibrate();
+        Player.numberOfTries++;
         gameOver = true;
         if(Player.numberOfTries == 5)
         {
@@ -188,7 +186,7 @@ public class GameManager : MonoBehaviour {
         isGameStarted = false;
         isLevelLoaded = true;
         StartGame(selectedLevel);
-        Player.numberOfTries++;
+        
     }
 
 }
