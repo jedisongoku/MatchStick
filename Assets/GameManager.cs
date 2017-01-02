@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
     public int selectedCircle = 0;
     public int selectedLevel;
     public int selectedDifficulty = 1;
+    public int numberOfTries = 0;
     public enum Circle_1_Easy { Green, DarkPurple, Blue };
     public enum Circle_2_Easy { Red, Purple, LightBlue };
     public enum Circle_3_Easy { Yellow, Red, Green };
@@ -35,7 +36,6 @@ public class GameManager : MonoBehaviour {
 	public void StartGame (int level)
     {
         music.Play();
-        Player.numberOfTries++;
         gameOver = false;
         colorMatch = false;
         
@@ -165,11 +165,11 @@ public class GameManager : MonoBehaviour {
     {
         music.Stop();
         Handheld.Vibrate();
-        Player.numberOfTries++;
+        numberOfTries++;
         gameOver = true;
-        if(Player.numberOfTries == 5)
+        if(numberOfTries == 5)
         {
-            Player.numberOfTries = 0;
+            numberOfTries = 0;
             UnityAds.ads.ShowAd();
         }
         DataStore.Save();
