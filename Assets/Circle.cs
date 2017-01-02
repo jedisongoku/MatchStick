@@ -5,19 +5,18 @@ using System.Collections.Generic;
 public class Circle : MonoBehaviour {
 
     public static Circle circle;
-
+    public float turnAngle;
     public SpriteRenderer sprite;
     public List<Sprite> circleSprites = new List<Sprite>();
     public List<Collision> circleCollisions = new List<Collision>();
 
-    
-
-    
+    private float turnAngleBase;
 
     // Use this for initialization
     void Start ()
     {
         circle = this;
+        turnAngleBase = turnAngle;
 	}
 	
 	// Update is called once per frame
@@ -27,8 +26,10 @@ public class Circle : MonoBehaviour {
     public void SetCircle()
     {
         int rand = Random.Range(0, 5);
+        transform.rotation = Quaternion.identity;
         sprite.sprite = circleSprites[rand];
         GameManager.gameManager.selectedCircle = rand;
+        turnAngle = turnAngleBase;
 
         switch(rand)
         {
@@ -63,5 +64,24 @@ public class Circle : MonoBehaviour {
                 }
                 break;
         }
+    }
+
+    public void StartSpin()
+    {
+        StartCoroutine(SpinCircle());
+    }
+
+    IEnumerator SpinCircle()
+    {
+        transform.Rotate(0, 0, turnAngle);
+
+        yield return new WaitForSeconds(0);
+
+        if (!GameManager.gameOver)
+        {
+            StartCoroutine(SpinCircle());
+        }
+
+
     }
 }

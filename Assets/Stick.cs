@@ -13,16 +13,18 @@ public class Stick : MonoBehaviour
     public string previousStickColor;
 
     private int colorRangeMin = 1;
+    private float turnAngleBase;
 
     void Start()
     {
         stick = this;
+        turnAngleBase = turnAngle;
     }
 
     public void StartStick()
     {
         transform.rotation = Quaternion.identity;
-        turnAngle = -1;
+        turnAngle = turnAngleBase;
         colorRangeMin = 1;
         previousStickColor = null;
         SetStickColor();
@@ -37,7 +39,7 @@ public class Stick : MonoBehaviour
 
     IEnumerator StickColor()
     {
-        int rand = Random.Range(colorRangeMin, 3);
+        int rand = Random.Range(colorRangeMin, 4);
 
         switch (GameManager.gameManager.selectedCircle)
         {

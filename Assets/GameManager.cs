@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager gameManager;
     public int selectedCircle = 0;
+    public int selectedLevel;
     public enum Circle_1 { DarkPurple, Blue, Red, Yellow };
     public enum Circle_2 { Blue, Red, Green, Purple };
     public enum Circle_3 { Purple, Yellow, Green, LightBlue };
@@ -17,18 +18,40 @@ public class GameManager : MonoBehaviour {
     void Start ()
     {
         gameManager = this;
-        StartGame();
     }
 	
-	public void StartGame ()
+	public void StartGame (int level)
     {
         gameOver = false;
         colorMatch = false;
         StartCoroutine(TouchListener());
-        Circle.circle.SetCircle();
-        Stick.stick.StartStick();
         Player.score = 0;
         GameHUDManager.gameHUDManager.UpdateHUD();
+        selectedLevel = level;
+
+        switch (level)
+        {
+            
+            case 1:
+                Circle.circle.SetCircle();
+                Stick.stick.StartStick();
+                break;
+            case 2:
+                Circle.circle.SetCircle();
+                Circle.circle.StartSpin();
+                Stick.stick.StartStick();
+                break;
+            case 3:
+                Circle.circle.SetCircle();
+                Circle.circle.StartSpin();
+                Stick.stick.StartStick();
+                break;
+        }
+        
+        
+        
+        
+        
 
     }
 
@@ -52,7 +75,28 @@ public class GameManager : MonoBehaviour {
                 {
                     colorMatch = false;
                     Stick.stick.SetStickColor();
-                    Stick.stick.turnAngle *= -1;
+                    if (selectedLevel == 1)
+                    {
+                        Stick.stick.turnAngle *= -1;
+                    }
+                    else if(selectedLevel == 2)
+                    {
+                        Circle.circle.turnAngle *= -1;
+                        Stick.stick.turnAngle *= -1;
+                    }
+                    else if(selectedLevel == 3)
+                    {
+                        int rand = Random.Range(-100, 100);
+                        if(rand < 0)
+                        {
+                            Circle.circle.turnAngle *= -1;
+                        }
+                        rand = Random.Range(-100, 100);
+                        if (rand < 0)
+                        {
+                            Stick.stick.turnAngle *= -1;
+                        }
+                    }
                     if (Stick.stick.turnAngle > 0)
                     {
                         Stick.stick.turnAngle += 0.1f;
@@ -89,7 +133,7 @@ public class GameManager : MonoBehaviour {
     public void Restart()
     {
 
-        StartGame();
+        StartGame(selectedLevel);
     }
 
 }
