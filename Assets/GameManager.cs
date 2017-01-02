@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour {
 	
 	public void StartGame (int level)
     {
+        Player.numberOfTries++;
         gameOver = false;
         colorMatch = false;
         
@@ -161,7 +162,10 @@ public class GameManager : MonoBehaviour {
     public void GameOver()
     {
         gameOver = true;
-        
+        if(Player.numberOfTries == 5)
+        {
+            UnityAds.ads.ShowAd();
+        }
         DataStore.Save();
         GameHUDManager.gameHUDManager.GameOver();
         StopAllCoroutines();
@@ -175,6 +179,7 @@ public class GameManager : MonoBehaviour {
         isGameStarted = false;
         isLevelLoaded = true;
         StartGame(selectedLevel);
+        Player.numberOfTries++;
     }
 
 }
