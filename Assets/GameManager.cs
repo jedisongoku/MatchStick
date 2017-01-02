@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour {
     public static bool gameOver = false;
     public static bool isGameStarted = false;
     public static bool isLevelLoaded = false;
+    public AudioSource music;
 
     public GameObject levelObject;
     private bool restart = false;
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour {
 	
 	public void StartGame (int level)
     {
+        music.Play();
         Player.numberOfTries++;
         gameOver = false;
         colorMatch = false;
@@ -103,6 +105,7 @@ public class GameManager : MonoBehaviour {
                 {
                     if (colorMatch)
                     {
+                        Handheld.Vibrate();
                         colorMatch = false;
                         Stick.stick.SetStickColor();
                         if (selectedDifficulty == 1)
@@ -127,7 +130,7 @@ public class GameManager : MonoBehaviour {
                                 Stick.stick.turnAngle *= -1;
                             }
                         }
-                        if (Stick.stick.turnAngle > 0)
+                        if (Stick.stick.turnAngle > 0 && Stick.stick.turnAngle < 4)
                         {
                             Stick.stick.turnAngle += 0.1f;
                         }
@@ -161,9 +164,14 @@ public class GameManager : MonoBehaviour {
 
     public void GameOver()
     {
+        music.Stop();
+        Handheld.Vibrate();
+        Handheld.Vibrate();
+        Handheld.Vibrate();
         gameOver = true;
         if(Player.numberOfTries == 5)
         {
+            Player.numberOfTries = 0;
             UnityAds.ads.ShowAd();
         }
         DataStore.Save();
@@ -175,6 +183,7 @@ public class GameManager : MonoBehaviour {
 
     public void Restart()
     {
+        music.Play();
         restart = true;
         isGameStarted = false;
         isLevelLoaded = true;

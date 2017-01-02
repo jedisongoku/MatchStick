@@ -35,7 +35,6 @@ public class UnityAds : MonoBehaviour
 
         if (Advertisement.IsReady())
         {
-            Player.numberOfTries = 0;
             Advertisement.Show();
         }
 

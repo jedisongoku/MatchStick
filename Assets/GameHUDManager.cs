@@ -211,10 +211,8 @@ public class GameHUDManager : MonoBehaviour {
 
     public void ShowLeaderboard()
     {
-        if (Social.localUser.authenticated)
-        {
-            Social.ShowLeaderboardUI();
-        }
+        Debug.Log("leaderboard");
+        Social.ShowLeaderboardUI();
     }
 
 }
