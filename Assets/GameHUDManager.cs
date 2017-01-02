@@ -22,6 +22,7 @@ public class GameHUDManager : MonoBehaviour {
         highScore.text = Player.highScore.ToString();
         score.GetComponent<Animator>().SetTrigger("Score");
         highScore.GetComponent<Animator>().SetTrigger("Score");
+
         Stick.stick.GetComponent<Animator>().SetTrigger("Score");
     }
 
