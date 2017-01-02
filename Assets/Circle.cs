@@ -29,7 +29,7 @@ public class Circle : MonoBehaviour {
     {
         
         
-        switch(GameManager.gameManager.selectedDifficulty)
+        switch(GameManager.gameManager.selectedLevel)
         {
             case 1:
                 randomNumber = Random.Range(0, 3);
@@ -127,7 +127,10 @@ public class Circle : MonoBehaviour {
 
     IEnumerator SpinCircle()
     {
-        transform.Rotate(0, 0, turnAngle);
+        if (GameManager.isGameStarted)
+        {
+            transform.Rotate(0, 0, turnAngle);
+        }
 
         yield return new WaitForSeconds(0);
 

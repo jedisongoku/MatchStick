@@ -41,7 +41,7 @@ public class Stick : MonoBehaviour
     IEnumerator StickColor()
     {
         
-        switch (GameManager.gameManager.selectedDifficulty)
+        switch (GameManager.gameManager.selectedLevel)
         {
             case 1:
                 randomNumber = Random.Range(colorRangeMin, 3);
@@ -116,8 +116,11 @@ public class Stick : MonoBehaviour
 
     IEnumerator StartTurning()
     {
-        transform.Rotate(0, 0, turnAngle);
-
+        if(GameManager.isGameStarted)
+        {
+            transform.Rotate(0, 0, turnAngle);
+        }
+        
         yield return new WaitForSeconds(0);
 
         if(!GameManager.gameOver)

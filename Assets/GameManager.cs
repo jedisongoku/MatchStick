@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour {
     public enum Circle_2_Hard { Red, Green, Purple, DarkPurple, Yellow, Blue };
     public static bool colorMatch = false;
     public static bool gameOver = false;
+    public static bool isGameStarted = false;
+    public static bool isLevelLoaded = false;
 
     public GameObject levelObject;
     private bool restart = false;
@@ -39,7 +41,7 @@ public class GameManager : MonoBehaviour {
         selectedLevel = level;
         if(!restart)
         {
-            switch (selectedDifficulty)
+            switch (selectedLevel)
             {
                 case 1:
                     levelObject = Instantiate(Resources.Load("GameEasy")) as GameObject;
@@ -52,13 +54,16 @@ public class GameManager : MonoBehaviour {
                     break;
             }
         }
-        
+        isLevelLoaded = true;
+        GameHUDManager.gameHUDManager.UpdateHUD();
+        GameHUDManager.gameHUDManager.touchText.gameObject.SetActive(true);
+        StartCoroutine(TouchListener());
         Invoke("StartGameDelayed", 0);
     }
 
     void StartGameDelayed()
     {
-        switch (selectedLevel)
+        switch (selectedDifficulty)
         {
 
             case 1:
@@ -82,7 +87,8 @@ public class GameManager : MonoBehaviour {
                 break;
         }
         restart = false;
-        StartCoroutine(TouchListener());
+        
+        
     }
 
     IEnumerator TouchListener()
@@ -92,47 +98,58 @@ public class GameManager : MonoBehaviour {
             if (Input.GetButtonDown("Fire1"))
             {
                 Debug.Log("FIRED");
-                if (GameManager.colorMatch)
+                if(isGameStarted)
                 {
-                    colorMatch = false;
-                    Stick.stick.SetStickColor();
-                    if (selectedLevel == 1)
+                    if (colorMatch)
                     {
-                        Stick.stick.turnAngle *= -1;
-                    }
-                    else if(selectedLevel == 2)
-                    {
-                        Circle.circle.turnAngle *= -1;
-                        Stick.stick.turnAngle *= -1;
-                    }
-                    else if(selectedLevel == 3)
-                    {
-                        int rand = Random.Range(-100, 100);
-                        if(rand < 0)
-                        {
-                            Circle.circle.turnAngle *= -1;
-                        }
-                        rand = Random.Range(-100, 100);
-                        if (rand < 0)
+                        colorMatch = false;
+                        Stick.stick.SetStickColor();
+                        if (selectedDifficulty == 1)
                         {
                             Stick.stick.turnAngle *= -1;
                         }
+                        else if (selectedDifficulty == 2)
+                        {
+                            Circle.circle.turnAngle *= -1;
+                            Stick.stick.turnAngle *= -1;
+                        }
+                        else if (selectedDifficulty == 3)
+                        {
+                            int rand = Random.Range(-100, 100);
+                            if (rand < 0)
+                            {
+                                Circle.circle.turnAngle *= -1;
+                            }
+                            rand = Random.Range(-100, 100);
+                            if (rand < 0)
+                            {
+                                Stick.stick.turnAngle *= -1;
+                            }
+                        }
+                        if (Stick.stick.turnAngle > 0)
+                        {
+                            Stick.stick.turnAngle += 0.1f;
+                        }
+                        Player.score++;
+                        if (Player.highScores[selectedLevel][selectedDifficulty - 1] < Player.score)
+                        {
+                            Player.highScores[selectedLevel][selectedDifficulty - 1] = Player.score;
+                        }
+                        GameHUDManager.gameHUDManager.UpdateHUD();
                     }
-                    if (Stick.stick.turnAngle > 0)
+                    else
                     {
-                        Stick.stick.turnAngle += 0.1f;
+                        GameOver();
                     }
-                    Player.score++;
-                    if(Player.highScore < Player.score)
-                    {
-                        Player.highScore = Player.score;
-                    }
-                    GameHUDManager.gameHUDManager.UpdateHUD();
                 }
-                else
+                if (isLevelLoaded)
                 {
-                    GameOver();
+                    GameHUDManager.gameHUDManager.touchText.gameObject.SetActive(false);
+                    isLevelLoaded = false;
+                    isGameStarted = true;
+                    //Invoke("StartGameDelayed", 0);
                 }
+
             }
         }
 
@@ -144,6 +161,7 @@ public class GameManager : MonoBehaviour {
     public void GameOver()
     {
         gameOver = true;
+        
         DataStore.Save();
         GameHUDManager.gameHUDManager.GameOver();
         StopAllCoroutines();
@@ -154,6 +172,8 @@ public class GameManager : MonoBehaviour {
     public void Restart()
     {
         restart = true;
+        isGameStarted = false;
+        isLevelLoaded = true;
         StartGame(selectedLevel);
     }
 

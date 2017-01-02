@@ -11,6 +11,7 @@ public class GameHUDManager : MonoBehaviour {
     public Transform menuButton;
     public Transform menuHUD;
     public Transform gameHUD;
+    public Transform touchText;
 
     void Start()
     {
@@ -21,13 +22,17 @@ public class GameHUDManager : MonoBehaviour {
     public void UpdateHUD()
     {
         score.text = Player.score.ToString();
-        highScore.text = Player.highScore.ToString();
-        score.GetComponent<Animator>().SetTrigger("Score");
-        if(Player.highScore == Player.score)
+        highScore.text = Player.highScores[GameManager.gameManager.selectedLevel][GameManager.gameManager.selectedDifficulty - 1].ToString();
+        if(GameManager.isGameStarted)
         {
-            highScore.GetComponent<Animator>().SetTrigger("Score");
+            score.GetComponent<Animator>().SetTrigger("Score");
+            if (Player.highScores[GameManager.gameManager.selectedLevel][GameManager.gameManager.selectedDifficulty - 1] == Player.score)
+            {
+                highScore.GetComponent<Animator>().SetTrigger("Score");
+            }
+            Stick.stick.GetComponent<Animator>().SetTrigger("Score");
         }
-        Stick.stick.GetComponent<Animator>().SetTrigger("Score");
+        
     }
 
     public void GameOver()
@@ -54,6 +59,8 @@ public class GameHUDManager : MonoBehaviour {
     public void GoToMenu()
     {
         Destroy(GameManager.gameManager.levelObject, 0);
+        GameManager.isGameStarted = false;
+        GameManager.isLevelLoaded = false;
         restartButton.gameObject.SetActive(false);
         menuButton.gameObject.SetActive(false);
         menuHUD.gameObject.SetActive(true);

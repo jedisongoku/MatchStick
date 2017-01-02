@@ -6,5 +6,5 @@ public class Player : MonoBehaviour
 {
 
     public static int score = 0;
-    public static int highScore = 0;
+    public static Dictionary<int, List<int>> highScores = new Dictionary<int, List<int>>();
 }
