@@ -9,8 +9,10 @@ public class Circle : MonoBehaviour {
     public SpriteRenderer sprite;
     public List<Sprite> circleSprites = new List<Sprite>();
     public List<Collision> circleCollisions = new List<Collision>();
+    public static List<Collision> circleCollision = new List<Collision>();
 
     private float turnAngleBase;
+    private static int randomNumber;
 
     // Use this for initialization
     void Start ()
@@ -25,49 +27,101 @@ public class Circle : MonoBehaviour {
 
     public void SetCircle()
     {
-        int rand = Random.Range(0, 5);
-        transform.rotation = Quaternion.identity;
-        sprite.sprite = circleSprites[rand];
-        GameManager.gameManager.selectedCircle = rand;
-        turnAngle = turnAngleBase;
-
-        switch(rand)
+        
+        
+        switch(GameManager.gameManager.selectedDifficulty)
         {
-            case 0:
-                for(int i = 0; i < circleCollisions.Count; i++)
-                {
-                    circleCollisions[i].SetColor(((GameManager.Circle_1)i).ToString());
-                }
-                break;
             case 1:
-                for (int i = 0; i < circleCollisions.Count; i++)
+                randomNumber = Random.Range(0, 3);
+                switch (randomNumber)
                 {
-                    circleCollisions[i].SetColor(((GameManager.Circle_2)i).ToString());
+                    case 0:
+                        for (int i = 0; i < circleCollisions.Count; i++)
+                        {
+                            circleCollisions[i].SetColor(((GameManager.Circle_1_Easy)i).ToString());
+                        }
+                        break;
+                    case 1:
+                        for (int i = 0; i < circleCollisions.Count; i++)
+                        {
+                            circleCollisions[i].SetColor(((GameManager.Circle_2_Easy)i).ToString());
+                        }
+                        break;
+                    case 2:
+                        for (int i = 0; i < circleCollisions.Count; i++)
+                        {
+                            circleCollisions[i].SetColor(((GameManager.Circle_3_Easy)i).ToString());
+                        }
+                        break;
+
                 }
                 break;
             case 2:
-                for (int i = 0; i < circleCollisions.Count; i++)
+                randomNumber = Random.Range(0, 5);
+                switch (randomNumber)
                 {
-                    circleCollisions[i].SetColor(((GameManager.Circle_3)i).ToString());
+                    case 0:
+                        for (int i = 0; i < circleCollisions.Count; i++)
+                        {
+                            circleCollisions[i].SetColor(((GameManager.Circle_1_Medium)i).ToString());
+                        }
+                        break;
+                    case 1:
+                        for (int i = 0; i < circleCollisions.Count; i++)
+                        {
+                            circleCollisions[i].SetColor(((GameManager.Circle_2_Medium)i).ToString());
+                        }
+                        break;
+                    case 2:
+                        for (int i = 0; i < circleCollisions.Count; i++)
+                        {
+                            circleCollisions[i].SetColor(((GameManager.Circle_3_Medium)i).ToString());
+                        }
+                        break;
+                    case 3:
+                        for (int i = 0; i < circleCollisions.Count; i++)
+                        {
+                            circleCollisions[i].SetColor(((GameManager.Circle_4_Medium)i).ToString());
+                        }
+                        break;
+                    case 4:
+                        for (int i = 0; i < circleCollisions.Count; i++)
+                        {
+                            circleCollisions[i].SetColor(((GameManager.Circle_5_Medium)i).ToString());
+                        }
+                        break;
                 }
                 break;
             case 3:
-                for (int i = 0; i < circleCollisions.Count; i++)
+                randomNumber = Random.Range(0, 2);
+                switch (randomNumber)
                 {
-                    circleCollisions[i].SetColor(((GameManager.Circle_4)i).ToString());
-                }
-                break;
-            case 4:
-                for (int i = 0; i < circleCollisions.Count; i++)
-                {
-                    circleCollisions[i].SetColor(((GameManager.Circle_5)i).ToString());
+                    case 0:
+                        for (int i = 0; i < circleCollisions.Count; i++)
+                        {
+                            circleCollisions[i].SetColor(((GameManager.Circle_1_Hard)i).ToString());
+                        }
+                        break;
+                    case 1:
+                        for (int i = 0; i < circleCollisions.Count; i++)
+                        {
+                            circleCollisions[i].SetColor(((GameManager.Circle_2_Hard)i).ToString());
+                        }
+                        break;
                 }
                 break;
         }
+        
+
+        transform.rotation = Quaternion.identity;
+        sprite.sprite = circleSprites[randomNumber];
+        GameManager.gameManager.selectedCircle = randomNumber;
+        turnAngle = turnAngleBase;
     }
 
     public void StartSpin()
     {
+        Debug.Log("Active? " + gameObject.activeInHierarchy);
         StartCoroutine(SpinCircle());
     }
 

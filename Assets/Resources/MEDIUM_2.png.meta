@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 1988521181e4e3947a03de2243a46245
-timeCreated: 1483302019
+guid: 65377289a3d750146abc056f06f85000
+timeCreated: 1483336685
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
@@ -49,7 +49,7 @@ TextureImporter:
   spriteTessellationDetail: -1
   textureType: 8
   buildTargetSettings:
-  - buildTarget: Standalone
+  - buildTarget: Android
     maxTextureSize: 2048
     textureFormat: -3
     compressionQuality: 50
@@ -59,7 +59,7 @@ TextureImporter:
     textureFormat: -3
     compressionQuality: 50
     allowsAlphaSplitting: 0
-  - buildTarget: Android
+  - buildTarget: Standalone
     maxTextureSize: 2048
     textureFormat: -3
     compressionQuality: 50

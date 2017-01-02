@@ -14,6 +14,7 @@ public class Stick : MonoBehaviour
 
     private int colorRangeMin = 1;
     private float turnAngleBase;
+    private int randomNumber;
 
     void Start()
     {
@@ -39,30 +40,67 @@ public class Stick : MonoBehaviour
 
     IEnumerator StickColor()
     {
-        int rand = Random.Range(colorRangeMin, 4);
-
-        switch (GameManager.gameManager.selectedCircle)
+        
+        switch (GameManager.gameManager.selectedDifficulty)
         {
-            case 0:
-                stickColor = ((GameManager.Circle_1)rand).ToString();
-                break;
             case 1:
-                stickColor = ((GameManager.Circle_2)rand).ToString();
+                randomNumber = Random.Range(colorRangeMin, 3);
+
+                switch (GameManager.gameManager.selectedCircle)
+                {
+                    case 0:
+                        stickColor = ((GameManager.Circle_1_Easy)randomNumber).ToString();
+                        break;
+                    case 1:
+                        stickColor = ((GameManager.Circle_2_Easy)randomNumber).ToString();
+                        break;
+                    case 2:
+                        stickColor = ((GameManager.Circle_3_Easy)randomNumber).ToString();
+                        break;
+                }
                 break;
             case 2:
-                stickColor = ((GameManager.Circle_3)rand).ToString();
+                randomNumber = Random.Range(colorRangeMin, 4);
+
+                switch (GameManager.gameManager.selectedCircle)
+                {
+                    case 0:
+                        stickColor = ((GameManager.Circle_1_Medium)randomNumber).ToString();
+                        break;
+                    case 1:
+                        stickColor = ((GameManager.Circle_2_Medium)randomNumber).ToString();
+                        break;
+                    case 2:
+                        stickColor = ((GameManager.Circle_3_Medium)randomNumber).ToString();
+                        break;
+                    case 3:
+                        stickColor = ((GameManager.Circle_4_Medium)randomNumber).ToString();
+                        break;
+                    case 4:
+                        stickColor = ((GameManager.Circle_5_Medium)randomNumber).ToString();
+                        break;
+                }
                 break;
             case 3:
-                stickColor = ((GameManager.Circle_4)rand).ToString();
+                randomNumber = Random.Range(colorRangeMin, 6);
+
+                switch (GameManager.gameManager.selectedCircle)
+                {
+                    case 0:
+                        stickColor = ((GameManager.Circle_1_Hard)randomNumber).ToString();
+                        break;
+                    case 1:
+                        stickColor = ((GameManager.Circle_2_Hard)randomNumber).ToString();
+                        break;
+                }
                 break;
-            case 4:
-                stickColor = ((GameManager.Circle_5)rand).ToString();
-                break;
+                
         }
+        
 
         yield return new WaitForSeconds(0);
 
-        if(stickColor == previousStickColor)
+        if (stickColor == previousStickColor)
         {
             StartCoroutine(StickColor());
         }

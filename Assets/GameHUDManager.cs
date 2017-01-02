@@ -53,9 +53,15 @@ public class GameHUDManager : MonoBehaviour {
 
     public void GoToMenu()
     {
+        Destroy(GameManager.gameManager.levelObject, 0);
         restartButton.gameObject.SetActive(false);
         menuButton.gameObject.SetActive(false);
         menuHUD.gameObject.SetActive(true);
         gameHUD.gameObject.SetActive(false);
+    }
+
+    public void SetDifficulty(int difficulty)
+    {
+        GameManager.gameManager.selectedDifficulty = difficulty;
     }
 }

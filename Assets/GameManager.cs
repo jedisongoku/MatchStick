@@ -6,13 +6,22 @@ public class GameManager : MonoBehaviour {
     public static GameManager gameManager;
     public int selectedCircle = 0;
     public int selectedLevel;
-    public enum Circle_1 { DarkPurple, Blue, Red, Yellow };
-    public enum Circle_2 { Blue, Red, Green, Purple };
-    public enum Circle_3 { Purple, Yellow, Green, LightBlue };
-    public enum Circle_4 { Yellow, Green, DarkPurple, Purple };
-    public enum Circle_5 { Red, Green, LightBlue, Blue };
+    public int selectedDifficulty = 1;
+    public enum Circle_1_Easy { Green, DarkPurple, Blue };
+    public enum Circle_2_Easy { Red, Purple, LightBlue };
+    public enum Circle_3_Easy { Yellow, Red, Green };
+    public enum Circle_1_Medium { DarkPurple, Blue, Red, Yellow };
+    public enum Circle_2_Medium { Blue, Red, Green, Purple };
+    public enum Circle_3_Medium { Purple, Yellow, Green, LightBlue };
+    public enum Circle_4_Medium { Yellow, Green, DarkPurple, Purple };
+    public enum Circle_5_Medium { Red, Green, LightBlue, Blue };
+    public enum Circle_1_Hard { Yellow, LightBlue, DarkPurple, Blue, Purple, Red };
+    public enum Circle_2_Hard { Red, Green, Purple, DarkPurple, Yellow, Blue };
     public static bool colorMatch = false;
     public static bool gameOver = false;
+
+    public GameObject levelObject;
+    private bool restart = false;
 
     // Use this for initialization
     void Start ()
@@ -24,50 +33,62 @@ public class GameManager : MonoBehaviour {
     {
         gameOver = false;
         colorMatch = false;
-        StartCoroutine(TouchListener());
+        
         Player.score = 0;
-        GameHUDManager.gameHUDManager.UpdateHUD();
+        //GameHUDManager.gameHUDManager.UpdateHUD();
         selectedLevel = level;
-
-        switch (level)
+        if(!restart)
         {
-            
-            case 1:
-                Circle.circle.SetCircle();
-                Stick.stick.StartStick();
-                break;
-            case 2:
-                Circle.circle.SetCircle();
-                Circle.circle.StartSpin();
-                Stick.stick.StartStick();
-                break;
-            case 3:
-                Circle.circle.SetCircle();
-                Circle.circle.StartSpin();
-                Stick.stick.StartStick();
-                break;
+            switch (selectedDifficulty)
+            {
+                case 1:
+                    levelObject = Instantiate(Resources.Load("GameEasy")) as GameObject;
+                    break;
+                case 2:
+                    levelObject = Instantiate(Resources.Load("GameMedium")) as GameObject;
+                    break;
+                case 3:
+                    levelObject = Instantiate(Resources.Load("GameHard")) as GameObject;
+                    break;
+            }
         }
         
-        
-        
-        
-        
+        Invoke("StartGameDelayed", 0);
+    }
 
+    void StartGameDelayed()
+    {
+        switch (selectedLevel)
+        {
+
+            case 1:
+                levelObject.GetComponentInChildren<Circle>().SetCircle();
+                levelObject.GetComponentInChildren<Stick>().StartStick();
+                //Circle.circle.SetCircle();
+                //Stick.stick.StartStick();
+                break;
+            case 2:
+                levelObject.GetComponentInChildren<Circle>().SetCircle();
+                levelObject.GetComponentInChildren<Circle>().StartSpin();
+                levelObject.GetComponentInChildren<Stick>().StartStick();
+                //Circle.circle.SetCircle();
+                //.circle.StartSpin();
+                //Stick.stick.StartStick();
+                break;
+            case 3:
+                levelObject.GetComponentInChildren<Circle>().SetCircle();
+                levelObject.GetComponentInChildren<Circle>().StartSpin();
+                levelObject.GetComponentInChildren<Stick>().StartStick();
+                break;
+        }
+        restart = false;
+        StartCoroutine(TouchListener());
     }
 
     IEnumerator TouchListener()
     {
         if (!gameOver)
         {
-            /*
-        if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            if(GameManager.colorMatch)
-            {
-                Stick.stick.SetStickColor();
-                Stick.stick.turnAngle *= -1;
-            }
-        }*/
             if (Input.GetButtonDown("Fire1"))
             {
                 Debug.Log("FIRED");
@@ -132,7 +153,7 @@ public class GameManager : MonoBehaviour {
 
     public void Restart()
     {
-
+        restart = true;
         StartGame(selectedLevel);
     }
 
